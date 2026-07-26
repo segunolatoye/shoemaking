@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layered — Scroll to Assemble</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap');
+
+  :root{
+    --cream: #F4EFE6;
+    --espresso: #2B1B12;
+    --sole: #2B1B12;
+    --midsole: #7B3F27;
+    --quarter: #A5673E;
+    --vamp: #C8955B;
+    --collar: #F0E6D2;
+    --ink: #2B1B12;
+    --muted: #7A6A5C;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, .display {
+    font-family: 'Fraunces', serif;
+  }
+
+  .hero {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 8vh 8vw 4vh;
+  }
+
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    font-weight: 600;
+    line-height: 1.05;
+    max-width: 14ch;
+    margin: 0 0 1.2rem;
+  }
+
+  .hero p {
+    max-width: 42ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 2rem;
+  }
+
+  .scroll-cue {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .scroll-cue .arrow {
+    width: 18px;
+    height: 18px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+    animation: nudge 1.6s ease-in-out infinite;
+  }
+
+  @keyframes nudge {
+    0%, 100% { transform: rotate(45deg) translate(0,0); }
+    50% { transform: rotate(45deg) translate(4px, 4px); }
+  }
+
+  .assembly {
+    position: relative;
+    height: 320vh;
+  }
+
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .stage-inner {
+    position: relative;
+    width: min(90vw, 720px);
+  }
+
+  .shoe-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .layer-label {
+    position: absolute;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-weight: 500;
+  }
+
+  .layer-label .dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--midsole);
+    margin-right: 0.5em;
+  }
+
+  .stage-caption {
+    position: absolute;
+    bottom: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .stage-caption strong {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  .closing {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 8vw;
+    border-top: 1px solid rgba(43,27,18,0.1);
+  }
+
+  .closing h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 600;
+    max-width: 18ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue .arrow { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="eyebrow">Handmade, layer by layer</div>
+    <h1>Every pair starts in pieces.</h1>
+    <p>Sole, midsole, upper, collar — each cut and shaped on its own before it ever becomes a shoe. Scroll to watch one come together.</p>
+    <div class="scroll-cue"><span class="arrow"></span> Scroll</div>
+  </section>
+
+  <section class="assembly" id="assembly">
+    <div class="stage">
+      <div class="stage-inner">
+        <svg class="shoe-svg" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="shoePath" d="M25,215 C25,180 55,155 100,145 C160,132 230,118 300,112 C370,106 440,104 490,118 C525,128 555,142 565,168 C570,182 566,196 552,204 L552,206 C552,214 544,220 534,220 L48,220 C34,220 25,220 25,215 Z"/>
+            <clipPath id="bandCollar"><rect x="0" y="100" width="600" height="26"/></clipPath>
+            <clipPath id="bandVamp"><rect x="0" y="126" width="600" height="24"/></clipPath>
+            <clipPath id="bandQuarter"><rect x="0" y="150" width="600" height="24"/></clipPath>
+            <clipPath id="bandMidsole"><rect x="0" y="174" width="600" height="24"/></clipPath>
+            <clipPath id="bandSole"><rect x="0" y="198" width="600" height="24"/></clipPath>
+          </defs>
+
+          <g class="layer" data-layer="collar" clip-path="url(#bandCollar)">
+            <use href="#shoePath" fill="var(--collar)" stroke="var(--ink)" stroke-width="1" stroke-opacity="0.15"/>
+          </g>
+          <g class="layer" data-layer="vamp" clip-path="url(#bandVamp)">
+            <use href="#shoePath" fill="var(--vamp)" stroke="var(--ink)" stroke-width="1" stroke-opacity="0.15"/>
+          </g>
+          <g class="layer" data-layer="quarter" clip-path="url(#bandQuarter)">
+            <use href="#shoePath" fill="var(--quarter)" stroke="var(--ink)" stroke-width="1" stroke-opacity="0.15"/>
+          </g>
+          <g class="layer" data-layer="midsole" clip-path="url(#bandMidsole)">
+            <use href="#shoePath" fill="var(--midsole)" stroke="var(--ink)" stroke-width="1" stroke-opacity="0.15"/>
+          </g>
+          <g class="layer" data-layer="sole" clip-path="url(#bandSole)">
+            <use href="#shoePath" fill="var(--sole)"/>
+          </g>
+        </svg>
+
+        <div class="layer-label" data-for="collar"><span class="dot"></span>Collar</div>
+        <div class="layer-label" data-for="vamp"><span class="dot"></span>Vamp</div>
+        <div class="layer-label" data-for="quarter"><span class="dot"></span>Quarter</div>
+        <div class="layer-label" data-for="midsole"><span class="dot"></span>Midsole</div>
+        <div class="layer-label" data-for="sole"><span class="dot"></span>Outsole</div>
+      </div>
+
+      <div class="stage-caption">
+        <strong id="captionTitle">Pulling apart</strong>
+        <span id="captionSub">five pieces, one shoe</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <h2>Built the same way, every single time.</h2>
+  </section>
+
+  <script>
+    const layers = document.querySelectorAll('.layer');
+    const labels = document.querySelectorAll('.layer-label');
+    const assembly = document.getElementById('assembly');
+    const captionTitle = document.getElementById('captionTitle');
+    const captionSub = document.getElementById('captionSub');
+
+    // Offsets applied when layers are fully split (progress = 0)
+    const splitOffsets = {
+      collar:  { x: -170, y: -70, r: -6 },
+      vamp:    { x: 150,  y: -30, r: 4 },
+      quarter: { x: -140, y: 10,  r: -3 },
+      midsole: { x: 160,  y: 45,  r: 3 },
+      sole:    { x: -60,  y: 90,  r: -2 }
+    };
+
+    // Approx positions (relative to viewBox) to place labels near each band
+    const labelPositions = {
+      collar:  { xPct: 8,  yPct: 40 },
+      vamp:    { xPct: 82, yPct: 50 },
+      quarter: { xPct: 6,  yPct: 60 },
+      midsole: { xPct: 84, yPct: 70 },
+      sole:    { xPct: 10, yPct: 84 }
+    };
+
+    labels.forEach(label => {
+      const key = label.dataset.for;
+      const pos = labelPositions[key];
+      label.style.left = pos.xPct + '%';
+      label.style.top = pos.yPct + '%';
+    });
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function update() {
+      if (reduceMotion) {
+        layers.forEach(layer => { layer.style.transform = 'translate(0,0) rotate(0)'; });
+        labels.forEach(l => l.style.opacity = 0);
+        return;
+      }
+
+      const rect = assembly.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      // progress 0 at top of section entering view, 1 once section has scrolled
+      // through roughly its own height (leaving the last viewport pinned as "joined")
+      const total = rect.height - vh;
+      const scrolled = -rect.top;
+      let progress = total > 0 ? scrolled / total : 0;
+      progress = clamp(progress, 0, 1);
+
+      // ease
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+      const splitAmount = 1 - eased; // 1 = fully split, 0 = fully joined
+
+      layers.forEach(layer => {
+        const key = layer.dataset.layer;
+        const off = splitOffsets[key];
+        const x = off.x * splitAmount;
+        const y = off.y * splitAmount;
+        const r = off.r * splitAmount;
+        layer.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
+      });
+
+      labels.forEach(label => {
+        // labels appear mid-split, fade out once joined
+        const visibility = clamp(splitAmount * 1.4, 0, 1) * clamp((1 - Math.abs(eased - 0.5) * 2 + 0.3), 0, 1);
+        label.style.opacity = eased > 0.08 && eased < 0.96 ? clamp(splitAmount, 0, 1) : 0;
+      });
+
+      if (eased < 0.15) {
+        captionTitle.textContent = 'Pulling apart';
+        captionSub.textContent = 'five pieces, one shoe';
+      } else if (eased < 0.85) {
+        captionTitle.textContent = 'Layer by layer';
+        captionSub.textContent = 'sole, midsole, quarter, vamp, collar';
+      } else {
+        captionTitle.textContent = 'Assembled';
+        captionSub.textContent = 'ready to wear';
+      }
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  </script>
+
+</body>
+</html>
