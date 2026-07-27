@@ -173,7 +173,7 @@ class Title {
         }
       `,
       fragment: `
-        precision highp float;
+        precision mediump float;
         uniform sampler2D tMap;
         varying vec2 vUv;
         void main() {
@@ -240,7 +240,7 @@ class Media {
       depthTest: false,
       depthWrite: false,
       vertex: `
-        precision highp float;
+        precision mediump float;
         attribute vec3 position;
         attribute vec2 uv;
         uniform mat4 modelViewMatrix;
@@ -256,7 +256,7 @@ class Media {
         }
       `,
       fragment: `
-        precision highp float;
+        precision mediump float;
         uniform vec2 uImageSizes;
         uniform vec2 uPlaneSizes;
         uniform sampler2D tMap;

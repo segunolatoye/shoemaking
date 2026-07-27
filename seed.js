@@ -18,8 +18,8 @@ const sampleDesigns = [
     description: "A timeless classic for the modern executive. Crafted from full-grain Italian calfskin with exquisite hand-stitching.",
     sizes: ["40", "41", "42", "43", "44", "45"],
     image_urls: [
-      "https://images.unsplash.com/photo-1614252209825-925086eecc45?w=800&q=80",
-      "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=800&q=80"
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/oxford_1.jpg",
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/oxford_2.jpg"
     ],
     video_url: null,
     model_3d_url: "/shoe.glb"
@@ -31,8 +31,8 @@ const sampleDesigns = [
     description: "Sleek and versatile. Features premium suede and elastic side panels for a comfortable, snug fit.",
     sizes: ["41", "42", "43", "44"],
     image_urls: [
-      "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=800&q=80",
-      "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&q=80"
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/chelsea_1.jpg",
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/chelsea_2.jpg"
     ],
     video_url: null,
     model_3d_url: null
@@ -44,8 +44,8 @@ const sampleDesigns = [
     description: "Double monk strap design offering a bold statement piece. Finished with a deep, rich patina.",
     sizes: ["39", "40", "41", "42", "43"],
     image_urls: [
-      "https://images.unsplash.com/photo-1595950653106-6c9ebd614c3a?w=800&q=80",
-      "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800&q=80"
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/monk_1.jpg",
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/monk_2.jpg"
     ],
     video_url: null,
     model_3d_url: null
@@ -57,8 +57,8 @@ const sampleDesigns = [
     description: "Perfect for smart-casual occasions. Lightweight sole with beautifully textured pebble-grain leather.",
     sizes: ["40", "41", "42", "43", "44"],
     image_urls: [
-      "https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?w=800&q=80",
-      "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80"
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/derby_1.jpg",
+      "https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/derby_2.jpg"
     ],
     video_url: null,
     model_3d_url: "/shoe.glb"

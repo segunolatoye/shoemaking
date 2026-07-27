@@ -6,16 +6,15 @@ import { Environment, Float, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import Link from 'next/link'
 import TextPressure from './TextPressure'
-import SideRays from './SideRays'
 import CircularGallery from './CircularGallery'
 
 const GALLERY_ITEMS = [
-  { image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800', text: 'Craftsmanship' },
-  { image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=800', text: 'Elegance' },
-  { image: 'https://images.unsplash.com/photo-1616406432452-07bc5938759d?q=80&w=800', text: 'Leather' },
-  { image: 'https://images.unsplash.com/photo-1542280281-11532074e5bd?q=80&w=800', text: 'Modern' },
-  { image: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?q=80&w=800', text: 'Bespoke' },
-  { image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800', text: 'Style' }
+  { image: 'https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/craftsmanship.jpg', text: 'Craftsmanship' },
+  { image: 'https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/elegance.jpg', text: 'Elegance' },
+  { image: 'https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/leather.jpg', text: 'Leather' },
+  { image: 'https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/modern.jpg', text: 'Modern' },
+  { image: 'https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/bespoke.jpg', text: 'Bespoke' },
+  { image: 'https://kfsuvebkimhfxjkijbjy.supabase.co/storage/v1/object/public/images/style.jpg', text: 'Style' }
 ]
 
 class ErrorBoundary extends Component<{ children: ReactNode, fallback: ReactNode }, { hasError: boolean }> {
@@ -60,8 +59,7 @@ function ShoeModel({ scrollY, url, index }: { scrollY: number, url: string, inde
     const maxScroll = typeof window !== 'undefined' ? window.innerHeight * 5 : 1000
     const offset = Math.min(Math.max(scrollY / maxScroll, 0), 1)
 
-    // Base rotation tied to scroll
-    ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, offset * Math.PI * 4, 4, delta)
+    // Base rotation tied to scroll (now handled via targetRotY)
     
     // Section boundaries
     const s1 = 0.2
@@ -75,15 +73,17 @@ function ShoeModel({ scrollY, url, index }: { scrollY: number, url: string, inde
     let targetY = -15 // Start way below the screen
     let targetZ = 0
     let targetRotX = 0
+    let targetRotY = offset * Math.PI * 4
     let targetRotZ = 0
 
     if (index === 0) { // shoe.glb
+      targetRotY -= Math.PI / 2; // Offset to show side view initially
       if (offset < s1) { // Hero
-        targetScale = 3; targetX = 0; targetY = 0; targetZ = 0;
+        targetScale = 6; targetX = 0; targetY = -1; targetZ = 0;
       } else if (offset >= s1 && offset < s2) { // The Atelier
-        targetScale = 1.5; targetX = -2.5; targetY = -2; targetRotZ = 0.1;
+        targetScale = 0; targetX = 0; targetY = -3; targetRotZ = 0.1; // Hide smoothly without yanking it far away
       } else if (offset >= s2 && offset < s3) { // Sculpted to Form
-        targetScale = 1.5; targetX = 2; targetY = 0; targetRotZ = 0.2;
+        targetScale = 5; targetX = 2.5; targetY = 0; targetRotZ = 0.2;
       } else { // Exit
         targetScale = 0; targetY = 15; targetX = 2;
       }
@@ -110,12 +110,17 @@ function ShoeModel({ scrollY, url, index }: { scrollY: number, url: string, inde
     }
 
     // Smoothly animate to targets
-    ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, targetX, 4, delta)
+    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
+    const mobileScale = isMobile ? 0.5 : 1
+    const mobileXOffset = isMobile ? 0 : 1
+
+    ref.current.position.x = THREE.MathUtils.damp(ref.current.position.x, targetX * mobileXOffset, 4, delta)
     ref.current.position.y = THREE.MathUtils.damp(ref.current.position.y, targetY, 4, delta)
     ref.current.position.z = THREE.MathUtils.damp(ref.current.position.z, targetZ, 4, delta)
     ref.current.rotation.x = THREE.MathUtils.damp(ref.current.rotation.x, targetRotX, 4, delta)
+    ref.current.rotation.y = THREE.MathUtils.damp(ref.current.rotation.y, targetRotY, 4, delta)
     ref.current.rotation.z = THREE.MathUtils.damp(ref.current.rotation.z, targetRotZ, 4, delta)
-    ref.current.scale.setScalar(THREE.MathUtils.damp(ref.current.scale.x, targetScale, 4, delta))
+    ref.current.scale.setScalar(THREE.MathUtils.damp(ref.current.scale.x, targetScale * mobileScale, 4, delta))
   })
 
   return (
@@ -189,24 +194,9 @@ export default function Hero3D() {
   return (
     <div className="relative w-full bg-transparent clip-path-auto">
       {/* 3D Canvas and Rays Background */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
         <div className="sticky top-0 w-full h-screen">
-          {/* SideRays Light Rays Background */}
-          <div className="absolute inset-0 -z-20">
-            <SideRays
-              speed={2.5}
-              rayColor1="#EAB308"
-              rayColor2="#96c8ff"
-              intensity={1.5}
-              spread={2}
-              origin="top-right"
-              tilt={0}
-              saturation={1.5}
-              blend={0.75}
-              falloff={1.6}
-              opacity={0.8}
-            />
-          </div>
+          {/* Removed SideRays Light Rays Background */}
 
           <Canvas camera={{ position: [0, 2, 10], fov: 45 }} style={{ width: '100%', height: '100%' }}>
             <ambientLight intensity={0.5} />
@@ -216,8 +206,8 @@ export default function Hero3D() {
             <ErrorBoundary fallback={<FallbackShoe scrollY={scrollY} />}>
               <Suspense fallback={<FallbackShoe scrollY={scrollY} />}>
                 <ShoeModel scrollY={scrollY} url="/shoe.glb?v=2" index={0} />
-                <ShoeModel scrollY={scrollY} url="/jordan.glb?v=2" index={1} />
-                <ShoeModel scrollY={scrollY} url="/BBS.glb?v=2" index={2} />
+                <ShoeModel scrollY={scrollY} url="/BBS.glb?v=2" index={1} />
+                <ShoeModel scrollY={scrollY} url="/jordan.glb?v=2" index={2} />
               </Suspense>
             </ErrorBoundary>
           </Canvas>
@@ -227,7 +217,7 @@ export default function Hero3D() {
       {/* Standard HTML Content overlaying the fixed Canvas */}
       <div className="relative z-10 pointer-events-none">
         {/* Section 1: Hero */}
-        <section className="w-full h-screen flex flex-col items-center justify-center text-center p-8">
+        <section className="w-full h-screen flex flex-col items-center justify-center text-center p-8 pb-48 md:pb-64">
           <h1 className="text-6xl md:text-8xl font-serif font-bold text-foreground mb-6 tracking-tight pointer-events-auto">Bespoke Mastery.</h1>
           <p className="text-xl md:text-2xl font-medium text-stone-600 dark:text-stone-300 max-w-2xl pointer-events-auto leading-relaxed">
             Where generations of traditional cordwaining meet uncompromising modern design. Every stitch tells a story of perfection.
