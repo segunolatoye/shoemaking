@@ -251,6 +251,7 @@ export default function Hero3D() {
               borderRadius={0.05}
               scrollEase={0.02}
               font="bold 30px Satoshi"
+              fontUrl=""
               scrollSpeed={2.2}
             />
           </div>
